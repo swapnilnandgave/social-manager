@@ -52,7 +52,7 @@ public final class Social {
     private String redirectUrl = null;
     private String clientID = null;
     private String clientSecret = null;
-    private SocialProfile socialProfile = null;
+    private SocialProfileSelection socialProfileSelection = null;
     private ISocialListener listener = null;
 
     // Auto Assign Properties
@@ -68,15 +68,12 @@ public final class Social {
     Social(Builder builder) {
         this.handlerThread.start();
         this.handler = new Handler(handlerThread.getLooper());
-        this.socialProfile = builder.socialProfile;
+        this.socialProfileSelection = builder.socialProfileSelection;
         this.redirectUrl = builder.redirectUrl;
         this.clientID = builder.clientID;
         this.clientSecret = builder.clientSecret;
         this.state = "SocialLogin" + new Random().nextInt(1000);
-//        if (socialProfile == SocialProfile.Facebook) {
-//            redirectUrl = "https://www.facebook.com/connect/login_success.html";
-//        }
-        switch (socialProfile) {
+        switch (socialProfileSelection) {
             case Google:
                 scope = "https://www.googleapis.com/auth/userinfo.email";
                 break;
@@ -113,8 +110,8 @@ public final class Social {
         };
     }
 
-    public SocialProfile getSocialProfile() {
-        return socialProfile;
+    public SocialProfileSelection getSocialProfileSelection() {
+        return socialProfileSelection;
     }
 
     public WebViewClient getWebClient() {
@@ -122,8 +119,8 @@ public final class Social {
     }
 
     public String requestUrl() {
-        Uri.Builder builder = this.socialProfile.authBuilder();
-        switch (socialProfile) {
+        Uri.Builder builder = this.socialProfileSelection.authBuilder();
+        switch (socialProfileSelection) {
             case LinkedIn:
             case Google:
             case Facebook:
@@ -142,10 +139,10 @@ public final class Social {
     }
 
     private void getAuthToken(final String authCode) {
-        Uri.Builder builder = this.socialProfile.tokenBuilder();
+        Uri.Builder builder = this.socialProfileSelection.tokenBuilder();
         String authUrl = builder.build().toString();
         String queryParams = null;
-        switch (socialProfile) {
+        switch (socialProfileSelection) {
             case LinkedIn:
             case Google:
             case Facebook:
@@ -159,7 +156,7 @@ public final class Social {
         socialStep = SocialStep.RequestingToken;
         sendStep();
         APIMethod method = APIMethod.POST;
-        switch (socialProfile) {
+        switch (socialProfileSelection) {
             case LinkedIn:
                 method = APIMethod.POST;
                 queryParams = builder.build().getQuery();
@@ -177,11 +174,11 @@ public final class Social {
     }
 
     private void getProfile(final String accessToken) {
-        String profileUrl = this.socialProfile.profileUrl();
+        String profileUrl = this.socialProfileSelection.profileUrl();
         socialStep = SocialStep.RequestingProfile;
         sendStep();
         APIMethod method = APIMethod.GET;
-        switch (socialProfile) {
+        switch (socialProfileSelection) {
             case LinkedIn:
                 method = APIMethod.GET;
                 break;
@@ -247,7 +244,6 @@ public final class Social {
                 } catch (Exception e) {
                     sendError("Failed to parse Auth Token - " + e.toString());
                 }
-
                 break;
         }
     }
@@ -294,13 +290,14 @@ public final class Social {
 
                 final int responseCode = httpURLConnection.getResponseCode();
                 if (responseCode == HttpURLConnection.HTTP_OK) {
-                    String response = "";
-                    String line;
                     BufferedReader br = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+                    StringBuilder stringBuilder = new StringBuilder();
+                    String line;
                     while ((line = br.readLine()) != null) {
-                        response += line;
+                        stringBuilder.append(line + "\n");
                     }
-                    parseContent(response);
+                    br.close();
+                    parseContent(stringBuilder.toString());
                 } else {
                     sendError("Failed with Code - " + responseCode + " at step " + socialStep.toString());
                 }
@@ -317,14 +314,14 @@ public final class Social {
         private String redirectUrl;
         private String clientID;
         private String clientSecret;
-        private SocialProfile socialProfile;
+        private SocialProfileSelection socialProfileSelection;
 
         public Builder() {
 
         }
 
-        public Social.Builder setProfile(SocialProfile socialProfile) {
-            this.socialProfile = socialProfile;
+        public Social.Builder setProfile(SocialProfileSelection socialProfileSelection) {
+            this.socialProfileSelection = socialProfileSelection;
             return this;
         }
 
@@ -344,7 +341,7 @@ public final class Social {
         }
 
         public Social build() {
-            if (socialProfile == null) {
+            if (socialProfileSelection == null) {
                 new RuntimeException("Social Profile is required");
             }
             if (clientID == null) {

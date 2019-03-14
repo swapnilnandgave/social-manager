@@ -6,7 +6,7 @@ import android.net.Uri;
  * Created by swapnilnandgave on 14/03/19.
  */
 
-public enum SocialProfile {
+public enum SocialProfileSelection {
 
     LinkedIn,
     Google,

@@ -7,7 +7,7 @@ import android.view.MenuItem;
 import android.webkit.WebView;
 
 import com.appcredence.socialmanager.Social;
-import com.appcredence.socialmanager.SocialProfile;
+import com.appcredence.socialmanager.SocialProfileSelection;
 
 /**
  * Created by swapnilnandgave on 14/03/19.
@@ -17,9 +17,10 @@ public class SocialActivity extends AppCompatActivity {
 
     private WebView webView;
 
-    final String redirectUrl = "https://dev.dhanvarsha.gravithy.com/oauth";
+    // TODO Set Redirect URL
+    final String redirectUrl = "<redirect-url>";
 
-    // LinkedIN
+    // TODO Set Client ID and Client Secret
     final String clientID = "xxxxxxxxxxxxxx";
     final String clientSecret = "xxxxxxxxxxxxxxxx";
 
@@ -36,7 +37,7 @@ public class SocialActivity extends AppCompatActivity {
     private void setupSocialLogin() {
 
         Social.Builder builder = new Social.Builder()
-                .setProfile(SocialProfile.Facebook)
+                .setProfile(SocialProfileSelection.Facebook)
                 .setRedirectUrl(redirectUrl)
                 .setClientID(clientID)
                 .setClientSecret(clientSecret);
@@ -62,7 +63,7 @@ public class SocialActivity extends AppCompatActivity {
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setAppCacheEnabled(true);
         // For Google Sign In
-        if (social.getSocialProfile() == SocialProfile.Google) {
+        if (social.getSocialProfileSelection() == SocialProfileSelection.Google) {
             webView.getSettings().setUserAgentString("Android");
         }
         webView.setWebViewClient(social.getWebClient());
