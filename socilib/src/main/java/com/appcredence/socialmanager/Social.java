@@ -44,7 +44,8 @@ public final class Social {
 
         void onStepCompleted(SocialStep socialStep);
 
-        void onCompleted(String content);
+        void onCompleted(SocialProfile socialProfile);
+
     }
 
     private static final String REQUEST_CODE = "code";
@@ -201,7 +202,7 @@ public final class Social {
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    listener.onCompleted(content);
+                    listener.onCompleted(new SocialProfile(content));
                 }
             });
         }
