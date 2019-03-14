@@ -20,8 +20,8 @@ public class SocialActivity extends AppCompatActivity {
     final String redirectUrl = "https://dev.dhanvarsha.gravithy.com/oauth";
 
     // LinkedIN
-    final String clientID = "xxxxqusf6wxxxx";
-    final String clientSecret = "xxxxqbZh3CWxxxxx";
+    final String clientID = "xxxxxxxxxxxxxx";
+    final String clientSecret = "xxxxxxxxxxxxxxxx";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

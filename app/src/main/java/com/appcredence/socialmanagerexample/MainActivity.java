@@ -33,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    // This is Sample Funtion to create Package Hash for LinkedIn Social Login
+
     private void getHashKey() {
 
         try {
