@@ -21,7 +21,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.appcredence.socialmanager.SocialActivity" />
+        <activity android:name=".SocialActivity" />
 
     </application>
 

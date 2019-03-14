@@ -10,8 +10,6 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 
-import com.appcredence.socialmanager.SocialActivity;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 

@@ -24,6 +24,10 @@ public enum SocialProfile {
                 break;
             case Facebook:
                 //https://www.facebook.com/v3.2/dialog/oauth
+                builder = new Uri.Builder();
+                builder.scheme("https");
+                builder.authority("www.facebook.com");
+                builder.appendPath("v3.2").appendPath("dialog").appendPath("oauth");
                 break;
             case Google:
                 //https://accounts.google.com/o/oauth2/v2/auth
@@ -48,6 +52,10 @@ public enum SocialProfile {
                 break;
             case Facebook:
                 //https://graph.facebook.com/v3.2/oauth/access_token
+                builder = new Uri.Builder();
+                builder.scheme("https");
+                builder.authority("graph.facebook.com");
+                builder.appendPath("v3.2").appendPath("oauth").appendPath("access_token");
                 break;
             case Google:
                 //https://www.googleapis.com/oauth2/v4/token

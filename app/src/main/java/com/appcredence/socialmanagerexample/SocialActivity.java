@@ -1,10 +1,8 @@
-package com.appcredence.socialmanager;
+package com.appcredence.socialmanagerexample;
 
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -13,11 +11,13 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.appcredence.socialmanager.Social;
+import com.appcredence.socialmanager.SocialProfile;
+
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -25,7 +25,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- * Created by swapnilnandgave on 13/03/19.
+ * Created by swapnilnandgave on 14/03/19.
  */
 
 public class SocialActivity extends AppCompatActivity {
@@ -33,11 +33,17 @@ public class SocialActivity extends AppCompatActivity {
     private WebView webView;
 
     final String redirectUrl = "https://dev.dhanvarsha.gravithy.com/oauth";
+    // LinkedIN
     //final String clientID = "81lhqusf6wav3s";
     //final String clientSecret = "50hOqbZh3CW1dpVz";
 
-    final String clientID = "143867976707-7i6flpdreavqsftb7hpu6v73mffg4mit.apps.googleusercontent.com";
-    final String clientSecret = "iAF-ZxkzyJOMdI69a8JH_wk5";
+    // Google Plus
+    //final String clientID = "143867976707-7i6flpdreavqsftb7hpu6v73mffg4mit.apps.googleusercontent.com";
+    //final String clientSecret = "iAF-ZxkzyJOMdI69a8JH_wk5";
+
+    // Facebook
+    final String clientID = "855877848121409";
+    final String clientSecret = "b2e798791c094658dc4741cbc88f0c0b";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,7 +68,7 @@ public class SocialActivity extends AppCompatActivity {
 //        });
 
         Social.Builder builder = new Social.Builder()
-                .setProfile(SocialProfile.Google)
+                .setProfile(SocialProfile.Facebook)
                 .setRedirectUrl(redirectUrl)
                 .setClientID(clientID)
                 .setClientSecret(clientSecret);
@@ -87,7 +93,9 @@ public class SocialActivity extends AppCompatActivity {
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setAppCacheEnabled(true);
         // For Google Sign In
-        webView.getSettings().setUserAgentString("Android");
+        if (social.getSocialProfile() == SocialProfile.Google) {
+            webView.getSettings().setUserAgentString("Android");
+        }
         webView.setWebViewClient(social.getWebClient());
         webView.loadUrl(social.requestUrl());
     }

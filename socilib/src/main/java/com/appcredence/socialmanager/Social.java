@@ -1,7 +1,6 @@
 package com.appcredence.socialmanager;
 
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
@@ -74,9 +73,9 @@ public final class Social {
         this.clientID = builder.clientID;
         this.clientSecret = builder.clientSecret;
         this.state = "SocialLogin" + new Random().nextInt(1000);
-        if (socialProfile == SocialProfile.Facebook) {
-            redirectUrl = "https://www.facebook.com/connect/login_success.html";
-        }
+//        if (socialProfile == SocialProfile.Facebook) {
+//            redirectUrl = "https://www.facebook.com/connect/login_success.html";
+//        }
         switch (socialProfile) {
             case Google:
                 scope = "https://www.googleapis.com/auth/userinfo.email";
@@ -114,6 +113,10 @@ public final class Social {
         };
     }
 
+    public SocialProfile getSocialProfile() {
+        return socialProfile;
+    }
+
     public WebViewClient getWebClient() {
         return webViewClient;
     }
@@ -123,6 +126,7 @@ public final class Social {
         switch (socialProfile) {
             case LinkedIn:
             case Google:
+            case Facebook:
                 builder.appendQueryParameter("response_type", REQUEST_CODE);
                 builder.appendQueryParameter("client_id", clientID);
                 builder.appendQueryParameter("redirect_uri", redirectUrl);
@@ -144,6 +148,7 @@ public final class Social {
         switch (socialProfile) {
             case LinkedIn:
             case Google:
+            case Facebook:
                 builder.appendQueryParameter("grant_type", "authorization_code");
                 builder.appendQueryParameter("code", authCode);
                 builder.appendQueryParameter("redirect_uri", redirectUrl);
